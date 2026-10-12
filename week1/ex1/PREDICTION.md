@@ -3,7 +3,7 @@
 > **Commit file này TRƯỚC khi nạp chương trình lần đầu.** Report sẽ phải giải thích
 > mọi chỗ dự đoán lệch so đo. Dự đoán sai không bị trừ điểm; dự đoán sau khi đo thì bị.
 
-`student_id`: 2413062    Ngày/giờ commit: 
+`student_id`: 2413062    Ngày/giờ commit: 9:41A.M 12/10/2026
 
 1. Chu kỳ LED tôi sẽ đo được: 96 ms (`BLINK_PERIOD_MS` = 97)
 2. Sai số giữa chu kỳ đo được và `BLINK_PERIOD_MS`: 1000 us. Vì sao?
