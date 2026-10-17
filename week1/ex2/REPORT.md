@@ -8,7 +8,7 @@
 | B2: preempt=1, ưu tiên khác nhau | 0 | 0 | 100 | — |![bước 2](image/B1.png)  |
 | B3: preempt=0, ưu tiên khác nhau | 0 | 0 | 100 | — |![bước 3](image/B2.png) |
 | B4: preempt=1, cùng ưu tiên | 30.25 | 35.04 | 34.71 | ms |![bước 4](image/B4.png) |
-| B5: sau khi sửa starvation | 1% | 1% | |98%|![bước 5](image/B5.png)|
+| B5: sau khi sửa starvation | 1% | 1%| |98%|![bước 5](image/B5.png)|
 
 Cách tính CPU share từ ảnh PulseView (mô tả ngắn):
 - thời gian task hoạt động trong 1 thời gian nhất định chia cho tổng thời gian cửa sổ
@@ -52,6 +52,6 @@ Mỗi mục lệch + nguyên nhân vật lý.
 Với **bộ ưu tiên của bạn**, nếu `TASK_C_WORK_US` tăng gấp 3 lần thì bảng CPU share ở
 bước 2 thay đổi thế nào? Trả lời bằng số suy ra từ dữ liệu của bạn, rồi **đo lại để
 kiểm chứng**. Nếu lệch, giải thích.
-- Khi tăng gấp 3 lần thì bảng CPU vẫn là Task A = 0%, Task B = 0%, Task C = 100%. Vì: khi đó chỉ làm tăng thời gian mức 1 của task C chứ không làm thay đổi 2 task còn lại ( C vẫn là task có ưu tiên cao nhất và khi không bị block/ yield thì task này vẫn thực hiện, 2 task kia starvation).
+- Khi tăng gấp 3 lần thì bảng CPU vẫn là Task A = 0%, Task B = 0%, Task C = 100%. Vì: khi đó chỉ làm tăng thời gian mức 1 của task C chứ không làm thay đổi 2 task còn lại ( C vẫn là task có ưu tiên cao nhất và khi không bị block/ yield thì task này vẫn thực hiện, 2 task kia vẫn bị starvation). 
 - Kiểm chứng:
 ![bước 2](image/kiemchung.png)
