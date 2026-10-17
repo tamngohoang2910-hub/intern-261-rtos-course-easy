@@ -8,7 +8,7 @@
 | B2: preempt=1, ưu tiên khác nhau | 0 | 0 | 100 | — |![bước 2](image/B1.png)  |
 | B3: preempt=0, ưu tiên khác nhau | 0 | 0 | 100 | — |![bước 3](image/B2.png) |
 | B4: preempt=1, cùng ưu tiên | 30.25 | 35.04 | 34.71 | ms |![bước 4](image/B4.png) |
-| B5: sau khi sửa starvation | -|- | |-|![bước 5](image/B5.png)|
+| B5: sau khi sửa starvation | 1% | 1% | |98%|![bước 5](image/B5.png)|
 
 Cách tính CPU share từ ảnh PulseView (mô tả ngắn):
 - thời gian task hoạt động trong 1 thời gian nhất định chia cho tổng thời gian cửa sổ
