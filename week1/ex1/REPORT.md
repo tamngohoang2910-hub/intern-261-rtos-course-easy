@@ -12,7 +12,7 @@
 | Sai số trung bình vs `BLINK_PERIOD_MS` |1.025% |
 | `uxTaskGetStackHighWaterMark()` của bringup_task |25 words |
 
-Ảnh PulseView (>= 10 chu kỳ, đọc được giá trị): ![ảnh pulseView](image/.png)
+Ảnh PulseView (>= 10 chu kỳ, đọc được giá trị): ![ảnh pulseView](image/im1.png)
 
 ## 2. Ba handler của kernel
 | Tên trong port ARM_CM3 | Tên trong vector table | Nhiệm vụ |
