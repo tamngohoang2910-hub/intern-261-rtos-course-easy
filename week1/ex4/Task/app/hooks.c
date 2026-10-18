@@ -8,6 +8,7 @@
 
 #include "main.h"
 #include "params.h"
+#include <string.h>
 
 void vApplicationStackOverflowHook(TaskHandle_t xTask, char *pcTaskName)
 {
@@ -18,7 +19,13 @@ void vApplicationStackOverflowHook(TaskHandle_t xTask, char *pcTaskName)
      * Hint: this hook runs from the scheduler's context, not the task's.
      */
     (void)xTask;
-    (void)pcTaskName;
+    const char tam[]= "STACK OVERFLOW, name: ";
+    HAL_UART_Transmit(&huart2,(uint8_t*)tam,sizeof(tam)-1,100);
+    if (pcTaskName !=NULL){
+        HAL_UART_Transmit(&huart2,(uint8_t*)pcTaskName,sizeof(pcTaskName)-1,100);
+    }
+    const char skip[]= "\r\n";
+        HAL_UART_Transmit(&huart2,(uint8_t*)skip,sizeof(skip)-1,100);
     for (;;) {
     }
 }
@@ -26,29 +33,35 @@ void vApplicationStackOverflowHook(TaskHandle_t xTask, char *pcTaskName)
 void vApplicationMallocFailedHook(void)
 {
     /* TODO 2: report, then stop. */
+    const char tbao[] ="MALLOC FAILED";
+    HAL_UART_Transmit(&huart2,(uint8_t*)tbao,sizeof(tbao)-1,100);
     for (;;) {
     }
 }
 
 /* configSUPPORT_STATIC_ALLOCATION = 1 makes these two callbacks mandatory.
  * Provide the memory for the idle task and the timer task here. */
+
 void vApplicationGetIdleTaskMemory(StaticTask_t **ppxIdleTaskTCBBuffer,
                                    StackType_t **ppxIdleTaskStackBuffer,
                                    uint32_t *pulIdleTaskStackSize)
 {
     /* TODO 3: static buffers. Note the size is in WORDS, not bytes —
      *         getting this wrong is a silent overflow. */
-    (void)ppxIdleTaskTCBBuffer;
-    (void)ppxIdleTaskStackBuffer;
-    (void)pulIdleTaskStackSize;
+    *ppxIdleTaskTCBBuffer   = &xIdleTaskTCB;
+    *ppxIdleTaskStackBuffer = uxIdleTaskStack;
+    *pulIdleTaskStackSize   = configMINIMAL_STACK_SIZE;
+    static StaticTask_t xIdleTaskTCB;
+    static StackType_t  uxIdleTaskStack[ configMINIMAL_STACK_SIZE ];
 }
-
+ static StaticTask_t xTimerTaskTCB;
+ static StackType_t  uxTimerTaskStack[ configTIMER_TASK_STACK_DEPTH ]; 
 void vApplicationGetTimerTaskMemory(StaticTask_t **ppxTimerTaskTCBBuffer,
                                     StackType_t **ppxTimerTaskStackBuffer,
                                     uint32_t *pulTimerTaskStackSize)
 {
     /* TODO 4: same, for the software timer task. */
-    (void)ppxTimerTaskTCBBuffer;
-    (void)ppxTimerTaskStackBuffer;
-    (void)pulTimerTaskStackSize;
+    *ppxTimerTaskTCBBuffer =&xTimerTaskTCB;
+    *ppxTimerTaskStackBuffer=uxTimerTaskStack;
+    *pulTimerTaskStackSize=configTIMER_TASK_STACK_DEPTH;
 }
