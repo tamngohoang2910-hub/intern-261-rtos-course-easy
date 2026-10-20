@@ -12,7 +12,7 @@
 | Còn lại / chưa dùng | — | 7288 |
 | **Tổng** | | **20480** |
 
-`.map` commit tại: `______`
+`.map` commit tại: `Task.map`
 
 ## 2. Số lúc chạy (dán nguyên văn log UART)
 --- FREERTOS RAM REPORT ---
