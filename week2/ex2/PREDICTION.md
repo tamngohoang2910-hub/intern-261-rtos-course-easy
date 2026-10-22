@@ -12,9 +12,9 @@
 - WRITER_PERIOD_MS cũng có thể gây ảnh hưởng vì chúng quyết định tần suẩt task log dày hay thưa. Khi giá trị này giảm thì tần suất các task gặp nhau sẽ dày hơn dẫn đến tăng khả năng lỗi lẫn lộn hơn.
 2. Dự đoán thứ tự **độ trễ in** (latency) từ thấp đến cao giữa mutex / critical
    section / gatekeeper. Vì sao?
-- Dự đoán theo mình từ thấp đến cao là critical section, gatekeeper và mutex.
+- Dự đoán theo mình từ thấp đến cao là critical section, mutex và gatekeeper.
 - Với critical section do có khả năng chặn các task cũng như ngắt nên thời gian latency thấp nhất do chỉ chạy đúng lệnh in.
-- Với gatekeeper do phải gửi dữ liệu yêu cầu xử lí cho gatekeeper task sau đó mới xử lí nên sẽ lâu hơn critical section.
+- Với gatekeeper do phải gửi dữ liệu yêu cầu xử lí cho gatekeeper task sau đó mới xử lí nên sẽ lâu hơn critical section, nhưng nếu queue đầy thì phải chờ queue trống mới có thể gửi lệnh, sau đó mới thực thi.
 - Với mutex sẽ có 2 trường hợp: 1 là khi task có mutex trước khi in thì thời gian latency sẽ xấp xỉ thời gian in, 2 là task chưa có mutex khi gọi khi in thì phải chờ khi nào có mutex thì mới có thể thực thi.
 3. Với critical section, task nào trong hệ thống có nguy cơ bị ảnh hưởng xấu
    nhất nếu đoạn in quá dài? (gợi ý: nghĩ đến ngắt, không chỉ task)
