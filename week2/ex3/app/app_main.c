@@ -3,22 +3,36 @@
  */
 #include "FreeRTOS.h"
 #include "task.h"
-
+#include "dwt.h"
 #include "main.h"
 #include "params.h"
 #include "tasks_lmh.h"
 
-void app_main(void)
+#define PRIO_LOW    1
+#define PRIO_MID    2
+#define PRIO_HIGH   3
+
+TaskHandle_t task_low_handle;
+TaskHandle_t task_mid_handle;
+TaskHandle_t task_high_handle;
+void app_main( void )
 {
-    resource_init();
+    BaseType_t xResult;
 
-    /* TODO: xTaskCreate task_low, task_mid, task_high with three DISTINCT
-     *       priorities, low < mid < high. Justify the exact numbers in
-     *       REPORT.md — they must leave room for configMAX_PRIORITIES and not
-     *       collide with any other task in the system. */
+    DWT_Init();             
+    resource_init();       
+    xResult = xTaskCreate( task_low, "LOW", 256, NULL, PRIO_LOW, &task_low_handle );
+    configASSERT( xResult == pdPASS );
 
+    xResult = xTaskCreate( task_mid, "MID", 256, NULL,PRIO_MID, &task_mid_handle );
+    configASSERT( xResult == pdPASS );
+
+    xResult = xTaskCreate( task_high, "HIGH", 256, NULL, PRIO_HIGH, &task_high_handle );
+    configASSERT( xResult == pdPASS );
+    ( void ) xResult;
     vTaskStartScheduler();
-
-    for (;;) {
+    configASSERT( 0 );
+    for( ;; )
+    {
     }
 }

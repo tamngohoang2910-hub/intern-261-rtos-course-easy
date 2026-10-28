@@ -15,7 +15,7 @@
 #include "main.h"
 #include "params.h"
 #include "tasks_lmh.h"
-
+#include "dwt.h"
 static SemaphoreHandle_t s_resource;
 
 void resource_init(void)
@@ -23,8 +23,15 @@ void resource_init(void)
 #if RESOURCE_MODE == 0
     /* TODO 1: xSemaphoreCreateBinary(), then give it once so it starts
      *         "available" (binary semaphores start empty). */
+s_resource = xSemaphoreCreateBinary();
+configASSERT( s_resource != NULL );
+BaseType_t xGiven = xSemaphoreGive( s_resource );
+ configASSERT( xGiven == pdTRUE );
 #else
     /* TODO 2: xSemaphoreCreateMutex(). */
+ s_resource = xSemaphoreCreateMutex();
+configASSERT( s_resource != NULL );
+
 #endif
 }
 
@@ -37,6 +44,18 @@ void task_low(void *argument)
          *         helper or a HAL tick-based wait, lower the GPIO, give
          *         s_resource back. Then yield/delay briefly before looping —
          *         this task must not monopolize the CPU outside the hold. */
+        if (xSemaphoreTake(s_resource, portMAX_DELAY) == pdTRUE)
+{
+    
+    HAL_GPIO_WritePin(GPIOA,GPIO_PIN_8,GPIO_PIN_SET);
+
+    // Giữ tài nguyên trong LOW_HOLD_MS
+     DWT_Burn_ms(LOW_HOLD_MS);  
+
+  HAL_GPIO_WritePin(GPIOA,GPIO_PIN_8,GPIO_PIN_RESET);
+    xSemaphoreGive(s_resource);
+}
+vTaskDelay(pdMS_TO_TICKS(1));
     }
 }
 
@@ -48,6 +67,12 @@ void task_mid(void *argument)
          *         vTaskDelay a short period so it keeps becoming Ready
          *         periodically rather than running once and blocking
          *         forever. This task never touches s_resource. */
+        HAL_GPIO_WritePin(GPIOA, GPIO_PIN_9,GPIO_PIN_SET);
+
+        DWT_Burn_ms(MID_WORK_MS);
+
+        HAL_GPIO_WritePin(GPIOA, GPIO_PIN_9,GPIO_PIN_RESET);
+        vTaskDelay(pdMS_TO_TICKS(10));
     }
 }
 
@@ -62,6 +87,20 @@ void task_high(void *argument)
          *         of work, give s_resource back, lower the first GPIO.
          *         The gap between the two GPIO edges on the logic analyzer
          *         is your block time t1 - t0. */
+        HAL_GPIO_WritePin(GPIOA,GPIO_PIN_10,GPIO_PIN_SET);
+
+    if (xSemaphoreTake(s_resource, portMAX_DELAY) == pdTRUE)
+    {
+        // t1: task_high đã lấy được tài nguyên
+        HAL_GPIO_WritePin(GPIOA,GPIO_PIN_11,GPIO_PIN_SET);
+
+        DWT_Burn_ms(5);
+
+        xSemaphoreGive(s_resource);
+        HAL_GPIO_WritePin(GPIOA,GPIO_PIN_11,GPIO_PIN_RESET);
+    }
+
+     HAL_GPIO_WritePin(GPIOA,GPIO_PIN_10,GPIO_PIN_RESET);
 
         vTaskDelayUntil(&last_wake, pdMS_TO_TICKS(HIGH_PERIOD_MS));
     }
