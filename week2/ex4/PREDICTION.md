@@ -2,7 +2,7 @@
 
 > **Commit TRƯỚC khi nạp chương trình.**
 
-`student_id`: ______    `EVENT_BIT_COUNT` = ____  `SYNC_TIMEOUT_MS` = ____
+`student_id`: __2413062____    `EVENT_BIT_COUNT` = ____  `SYNC_TIMEOUT_MS` = ____
 
 1. RAM event group chiếm (bytes) dự đoán: ______ . Dựa vào đâu (cấu trúc dữ
    liệu nào trong FreeRTOS)?
