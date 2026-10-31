@@ -39,3 +39,8 @@ Mỗi mục lệch + nguyên nhân vật lý.
 Với `SAMPLE_PERIOD_MS` của **bạn**, nếu `FILTER_WINDOW` tăng gấp đôi thì độ trễ
 từ cảm biến đến UART tăng thêm bao nhiêu ms? Trả lời bằng số từ dữ liệu của bạn,
 rồi đo lại để kiểm chứng.
+-Khi `FILTER_WINDOW` tăng gấp đôi (từ 8 lên 16 mẫu) thì độ trễ từ cảm biến đến uart:
+Δ(16) = (16 − 1) / 2 × 4 ms = 30 ms,  Δ(8) = (8 − 1) / 2 × 4 ms = 14 ms, vậy dự đoán tăng thêm 16ms
+Minh chứng:
+![minhchung](minhchung.png)
+-So với lí thuyết thì ta thấy độ trễ tăng thêm khoảng 16ms, qua đó ta thấy sự đánh đổi: Cửa sổ lớn hơn thì nhiễu giảm (trung bình nhiều mẫu hơn), nhưng đáp ứng chậm hơn
