@@ -22,7 +22,26 @@ void writer_task(void *argument)
 
     for (;;) {
         /* TODO 2 */
-        (void)seq;
+         char msg[MSG_LEN];
+
+        /* Format message into a fixed-size buffer. */
+        int n = snprintf(msg, sizeof(msg),
+                         "W%lu #%lu\r\n",
+                         (unsigned long)id,
+                         (unsigned long)seq++);
+
+        /* Send exactly MSG_LEN bytes, padding with spaces if necessary. */
+        if (n >= 0) {
+            size_t used = (size_t)n;
+            if (used < sizeof(msg)) {
+                while (used < sizeof(msg)) {
+                    msg[used++] = ' ';
+                }
+            }
+
+            uart_guard_send(id, msg, sizeof(msg));
+        }
+
         vTaskDelay(pdMS_TO_TICKS(WRITER_PERIOD_MS));
     }
 }
