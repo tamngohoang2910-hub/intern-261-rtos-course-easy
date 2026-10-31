@@ -115,9 +115,8 @@ void sync_task(void *argument)
         const EventBits_t rest_mask = ALL_BITS_MASK & ~1u;
 
         uint32_t got0 = ulTaskNotifyTake(pdTRUE, pdMS_TO_TICKS(SYNC_TIMEOUT_MS));
-        uint32_t t1n = DWT->CYCCNT;                        /* [THÊM] đặt NGAY SAU, trước mọi lệnh khác */
+        uint32_t t1n = DWT->CYCCNT;                        
         if (got0 != 0u) {
-            uint32_t t1n = DWT->CYCCNT;
             noti_lat = t1n - t0_n;
             noti_valid = 1u;
         }
