@@ -6,13 +6,14 @@
 #include "task.h"
 #include "event_groups.h"
 
+
 #include "main.h"
 #include "params.h"
 #include "supervisor.h"
 
 EventGroupHandle_t supervisor_events;
-
-#define ALL_BITS ((1u << SUPERVISOR_BITS) - 1u)
+extern IWDG_HandleTypeDef hiwdg;
+#define ALL_BITS (SUPERVISOR_BIT_ALPHA | SUPERVISOR_BIT_BETA )
 
 void supervisor_init(void)
 {
@@ -21,6 +22,9 @@ void supervisor_init(void)
      * TODO 2: HAL IWDG init here (IWDG_TIMEOUT_MS -> prescaler + reload per
      *         RM0008 IWDG chapter; IWDG runs off LSI, ~40 kHz, compute the
      *         reload value and show the computation in REPORT.md). */
+    supervisor_events = xEventGroupCreate();
+
+    configASSERT(supervisor_events != NULL);
 }
 
 void supervisor_task(void *argument)
@@ -39,5 +43,13 @@ void supervisor_task(void *argument)
          *         the call returned), HAL_IWDG_Refresh(&hiwdg). Otherwise do
          *         NOTHING -- that is what lets IWDG_TIMEOUT_MS expire and
          *         reset the board when a task stops checking in. */
-    }
+                EventBits_t bits = xEventGroupWaitBits(supervisor_events, ALL_BITS, pdTRUE, pdTRUE, pdMS_TO_TICKS(500));
+        if ((bits & ALL_BITS) == ALL_BITS)
+        {
+            if (hiwdg.Instance != NULL)   /* chỉ refresh khi IWDG đã được init */
+            {
+                HAL_IWDG_Refresh(&hiwdg);
+            }
+        }
+}
 }

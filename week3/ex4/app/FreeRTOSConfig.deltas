@@ -1,12 +1,12 @@
 # Ex4 -- các định nghĩa phải có trong FreeRTOSConfig.h cho run-time stats
 
-configGENERATE_RUN_TIME_STATS           1
-configUSE_TRACE_FACILITY                1
-configUSE_STATS_FORMATTING_FUNCTIONS    1
+#define configGENERATE_RUN_TIME_STATS            1
+#define configUSE_TRACE_FACILITY                 1
+#define configUSE_STATS_FORMATTING_FUNCTIONS     1
+#define INCLUDE_xSemaphoreGetMutexHolder         1
 
-# Hai macro bắt buộc, trỏ vào app/runtime_stats.c:
-portCONFIGURE_TIMER_FOR_RUN_TIME_STATS()  runtime_stats_timer_init()
-portGET_RUN_TIME_COUNTER_VALUE()          runtime_stats_timer_value()
+#define portCONFIGURE_TIMER_FOR_RUN_TIME_STATS()  runtime_stats_timer_init()
+#define portGET_RUN_TIME_COUNTER_VALUE()          runtime_stats_timer_value()
 
 # IWDG chạy trên LSI (~40 kHz), KHÔNG phụ thuộc HCLK/TIM4 -- vẫn reset được
 # ngay cả khi lõi đang deadlock trên một mutex. Tính reload value cho
