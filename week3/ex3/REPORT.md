@@ -12,14 +12,13 @@ nhất 1 ví dụ có số liệu trước/sau.
 - Phản ứng với `P`: ban đầu cho tín hiệu toggle 200ms, sau 5 lần gọi lệnh P500 thì tín hiệu toggle 500ms, minh chứng: ![P500](image/P500.png)
 - Phản ứng với `T`:ban đầu cho tín hiệu toggle 200ms, sau 6 lần lệnh T0 thì tín hiệu sẽ dừng, T1 sẽ toggle 200ms trở lại, minh chứng:![T0/T1](image/T0_T1.png)
 - Phản ứng với `S`: ban đầu, demo_task có priority là 1, sau 6 lệnh S2 nâng prior lên 2, sau lệnh S1, task trở về prior 1. Minh chứng: ![S](image/S1_S2.png)
-- Lí do phải gọi lệnh 5-6 lần do theo thông số của em có TRIGGER_LEVEL= 16 byte, mỗi lần gọi (S1\r, S2\r,T0\r) tốn 3 byte nên gọi 6 lần mới hơn 16 byte, lúc này lệnh mới được thực thi. Còn khi gọi lệnh P500\r tốn 4 byte nên gọi 5 lần là 20>16 byte, sau đó lệnh mới thực thi. 
+- Lí do phải gọi lệnh 5-6 lần do theo thông số của em có TRIGGER_LEVEL= 16 byte, mỗi lần gọi (S1\r, S2\r,T0\r) tốn 3 byte nên gọi 6 lần mới hơn 16 byte, lúc này lệnh mới được thực thi. Còn khi gọi lệnh P500\r tốn 5 byte nên gọi 4 lần là 20>16 byte, sau đó lệnh mới thực thi. 
 - Trigger level là số byte tối thiểu phải có trong stream buffer thì task đang chờ (Blocked) mới được đánh thức.
 ## 3. Test gửi nhanh
 | | Số lệnh gửi | Số lệnh nhận đúng | Mất/lỗi |
 |---|---|---|---|
 | Gõ tay bình thường | 16 | 16 | 0 |
 | Gửi liên tục (script) | 1000 lệnh | 999 | 0 byte mất và lỗi, 1 lệnh chưa xử lí |
-
 Nếu có mất byte: giải thích bằng cơ chế (stream buffer đầy, parser bị trễ,
 hay nguyên nhân khác) — không chỉ nói "bị mất".
 - Không mất byte trong cả 2 trường hợp.
