@@ -40,7 +40,7 @@ Với `RX_BAUD` của bạn, nếu tăng gấp đôi `STREAM_BUFFER_BYTES`, tố
 | STREAM_BUFFER_BYTES |Tốc độ thực đo cao nhất (byte/s) | Byte tới ISR / gửi | Mất / lỗi |
 |---|---|---|---|
 |128| 11096|16893 / 16893|0/0|
-|256| 11096| 16893 / 16893|0/0|
+|256| 11098| 16893 / 16893|0/0|
 - Ảnh minh chứng từ script:
 + 128 byte:
 ![128byte](image/128byte.png)
